@@ -1,36 +1,52 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Seismic Exposure Explorer
 
-## Getting Started
+A 3D web app that answers one question: **is this building inside an earthquake fault zone?**
 
-First, run the development server:
+Search an address in San Bernardino County, or click any building, and the app runs a spatial query against California's Alquist-Priolo seismic hazard zones and tells you the answer.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+**Live demo:** [https://your-app.vercel.app](https://seismic-exposure-explorer.vercel.app/)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+![Screenshot](./public/screenshot.png)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Why I built it
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+I wanted to explore the ArcGIS Maps SDK for JavaScript by building something that answers a real question rather than just rendering a map. Earthquake fault zones are a genuine concern for homeowners here, and San Bernardino County publishes both the building footprints and the hazard zones as open data.
 
-## Learn More
+## Data
 
-To learn more about Next.js, take a look at the following resources:
+| Layer | Source | Notes |
+|---|---|---|
+| 3D building footprints | San Bernardino County | 584,000 buildings, cached scene layer |
+| 2D building footprints | San Bernardino County | 830,000 polygons, used for spatial queries |
+| Alquist-Priolo fault zones | California Geological Survey, via San Bernardino County | 245 polygons |
+| Basemap, terrain, geocoding | Esri | |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Stack
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- Next.js (App Router) + TypeScript
+- ArcGIS Maps SDK for JavaScript (`@arcgis/core`)
+- CSS Modules
+- Deployed on Vercel
 
-## Deploy on Vercel
+## How it works
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+**3D rendering.** Buildings come from a cached 3D object scene layer rendered in a `SceneView`, coloured by height with a class-breaks renderer. Fault zones are polygons draped on the terrain.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+**Point vs. polygon.** An address is genuinely a point, so address searches query the fault zones with that point. A *building* is not — a footprint can straddle a zone boundary. Clicking a building therefore fetches its real outline from the 2D footprints layer and tests the whole polygon with an intersects query, so a building partly inside a zone correctly reports as inside.
+
+**"Nearest zone" without geometry math.** When a location isn't in a zone, the app runs distance queries at widening radii (¼, ½, 1, 2, 5, 10, 25 miles) and reports the first hit. This keeps the work server-side and avoids client-side projection and geodesic distance calculations for an approximate answer that only needs to be approximate.
+
+**Search.** A custom input calling `suggestLocations` and `addressToLocations` directly, rather than the Search widget, so the UI is fully styleable. Includes browser geolocation with reverse geocoding for the address label.
+
+**Loading state.** The overlay clears when the scene layer view actually stops updating (`layerView.updating`), not when the view is merely ready — so it reflects when buildings have really finished drawing.
+
+## Limitations
+
+* Prototype, not for official use. Authoritative fault zone determinations come from the California Geological Survey.
+* Building data is from 2021 and won't include newer construction.
+* "Nearest zone" is bucketed to the query radii above, not an exact distance.
+* Geolocation requires HTTPS, so it works on the deployed site but not over a plain-HTTP local network address.
+
+
+## Author
+Built by Fernando Nunez
