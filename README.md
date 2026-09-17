@@ -4,7 +4,7 @@ A 3D web app that answers one question: **is this building inside an earthquake 
 
 Search an address in San Bernardino County, or click any building, and the app runs a spatial query against California's Alquist-Priolo seismic hazard zones and tells you the answer.
 
-**Live demo:** [https://your-app.vercel.app](https://seismic-exposure-explorer.vercel.app/)
+**Live demo:** [https://seismic-exposure-explorer.vercel.app/](https://seismic-exposure-explorer.vercel.app/)
 
 ![Screenshot](./public/screenshot.png)
 
