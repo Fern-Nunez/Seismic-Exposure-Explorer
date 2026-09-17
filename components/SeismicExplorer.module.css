@@ -1,0 +1,382 @@
+/* Layout ---------------------------------------------------------------------------*/
+
+.root {
+    position: relative;
+    height: 100vh;
+    height: 100dvh;
+    width: 100%;
+    overflow: hidden;
+    font-family: system-ui, sans-serif;
+}
+
+.map {
+    position: absolute;
+    inset: 0;
+}
+
+/* Address search -------------------------------------------------------------------*/
+
+.search {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: min(560px, calc(100% - 40px));
+    z-index: 11;
+}
+
+.searchBar {
+    display: flex;
+    align-items: center;
+    background: #ffffff;
+    border-radius: 1px;
+    box-shadow: 0 3px 24px rgba(0, 0, 0, 0.18);
+    overflow: hidden;
+}
+
+.searchInput {
+    flex: 1;
+    border: 0;
+    outline: none;
+    padding: 0 16px;
+    height: 50px;
+    font-family: inherit;
+    font-size: 18px;
+    color: #111111;
+    background: transparent;
+}
+
+.searchInput::placeholder {
+    color: #9a9a9a;
+}
+
+.clearButton {
+    border: 0;
+    background: transparent;
+    padding: 0 14px;
+    height: 50px;
+    font-size: 18px;
+    line-height: 1;
+    color: #000000;
+    cursor: pointer;
+}
+
+/* Dropdown -------------------------------------------------------------------------*/
+
+.dropdown {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    right: 0;
+    z-index: 12;
+    background: #ffffff;
+    border-radius: 1px;
+    box-shadow: 0 3px 24px rgba(0, 0, 0, 0.18);
+    overflow: hidden;
+}
+
+.locationButton {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    border: 0;
+    background: transparent;
+    text-align: left;
+    padding: 12px 16px;
+    font-family: inherit;
+    font-size: 16px;
+    color: #222222;
+    cursor: pointer;
+}
+
+.locationButton:hover:not(:disabled) {
+    background: #f2f4f7;
+}
+
+.locationButton:disabled {
+    color: #9a9a9a;
+    cursor: default;
+}
+
+.locationIcon {
+    font-size: 18px;
+    line-height: 1;
+}
+
+.locationError {
+    margin: 0;
+    padding: 0 16px 12px;
+    font-size: 13px;
+    color: #db1f12;
+}
+
+.suggestions {
+    list-style: none;
+    margin: 0;
+    padding: 6px 0;
+    border-top: 1px solid #ececec;
+    max-height: 260px;
+    overflow-y: auto;
+}
+
+.suggestion {
+    display: block;
+    width: 100%;
+    border: 0;
+    background: transparent;
+    text-align: left;
+    padding: 10px 16px;
+    font-family: inherit;
+    font-size: 16px;
+    color: #222222;
+    cursor: pointer;
+}
+
+.suggestion:hover,
+.suggestion:focus {
+    background: #f2f4f7;
+    outline: none;
+}
+
+/* Info panel -----------------------------------------------------------------------*/
+
+.panel {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 10;
+    width: 320px;
+    padding: 20px;
+    background: #ffffff;
+    border-radius: 1px;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.18);
+    color: #000000;
+}
+
+.title {
+    margin: 0 0 6px;
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+}
+
+.subtitle {
+    margin: 0 0 16px;
+    font-size: 13px;
+    line-height: 1.45;
+    color: #5a5a5a;
+}
+
+.toggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.busy {
+    margin: 16px 0 0;
+    font-size: 13px;
+    color: #5a5a5a;
+}
+
+.credit {
+    margin: 16px 0 0;
+    padding-top: 12px;
+    border-top: 1px solid #ececec;
+    font-size: 11px;
+    line-height: 1.5;
+    color: #8a8a8a;
+}
+
+.credit a {
+    color: #8a8a8a;
+    text-decoration: underline;
+}
+
+/* Result ---------------------------------------------------------------------------*/
+
+.result {
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid #ececec;
+}
+
+.resultLabel {
+    margin: 0 0 10px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #333333;
+    overflow-wrap: anywhere;
+}
+
+.verdict {
+    padding: 0px 0px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.inZone {
+    background: #ffffff;
+    color: #db1f12;
+}
+
+.outZone {
+    background: #ffffff;
+    color: #1b5e20;
+}
+
+.facts {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 6px 14px;
+    margin: 14px 0 0;
+    font-size: 13px;
+}
+
+.facts dt {
+    color: #7a7a7a;
+}
+
+.facts dd {
+    margin: 0;
+    color: #111111;
+    text-align: right;
+    overflow-wrap: anywhere;
+}
+
+/* Loading overlay ------------------------------------------------------------------------*/
+
+.loading {
+    position: absolute;
+    inset: 0;
+    z-index: 20;
+    display: grid;
+    place-items: center;
+    background: #050505;
+}
+
+.loadingInner {
+    text-align: center;
+    color: #ffffff;
+    padding: 24px;
+}
+
+.loadingTitle {
+    margin: 20px 0 6px;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.loadingText {
+    margin: 0;
+    font-size: 13px;
+    color: #9aa0a6;
+}
+
+.spinner {
+    width: 34px;
+    height: 34px;
+    margin: 0 auto;
+    border: 3px solid rgba(255, 255, 255, 0);
+    border-top-color: #ffffff;
+    border-radius: 50%;
+    animation: spin 900ms linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
+/* Mobile ----------------------------------------------------------------------------*/
+@media (max-width: 640px) {
+
+    .search {
+        top: auto;
+        bottom: calc(30dvh + 12px);
+        width: calc(100% - 24px);
+    }
+
+    .searchInput {
+        height: 48px;
+        font-size: 16px;
+    }
+
+    .clearButton {
+        height: 48px;
+    }
+
+    .locationButton {
+        font-size: 16px;
+        padding: 12px 16px;
+    }
+
+    .suggestion {
+        font-size: 16px;
+        padding: 12px 16px;
+    }
+
+    .panel {
+        top: auto;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        width: auto;
+        height: 30dvh;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        overflow: hidden;
+        padding: 16px 20px 20px;
+        border-radius: 0px 0px 0 0;
+    }
+
+    .result {
+        order: -1;
+        margin: 0;
+        padding: 0;
+        border-top: none;
+    }
+
+    .title {
+        order: 1;
+        font-size: 15px;
+        color: #666;
+        font-weight: 500;
+    }
+
+    .toggle {
+        order: 2;
+        font-size: 15px;
+    }
+
+    .subtitle {
+        display: none;
+    }
+
+    .resultLabel {
+        font-size: 15px;
+        margin-bottom: 8px;
+    }
+
+    .verdict {
+        font-size: 17px;
+        padding: 0px 0px;
+    }
+
+    .facts {
+        font-size: 15px;
+    }
+    .credit {
+        order: 3;
+        margin: 0;
+        padding-top: 8px;
+        font-size: 10px;
+    }
+}
